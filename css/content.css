@@ -1,1 +1,11 @@
+.subnav-search-context+.subnav-search .subnav-search-input {
+  float: left;
+  border-radius: 0;
+}
 
+.subnav-search-context+.subnav-search .filters_extension.btn {
+  float: left;
+  border-top-left-radius: 0;
+  border-left: 0;
+  border-bottom-left-radius: 0;
+}

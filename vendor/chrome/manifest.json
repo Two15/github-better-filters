@@ -4,12 +4,12 @@
   "description": "This is the right place for a description",
   "version": "0.0.0",
 
-  "permissions": [
-    "tabs"
-  ],
+  "permissions": [],
   "content_scripts": [{
-    "run_at": "document_end",
-    "css": [],
+    "run_at": "document_idle",
+    "css": [
+      "css/content.css"
+    ],
     "js": [
       "js/main.js"
     ],
