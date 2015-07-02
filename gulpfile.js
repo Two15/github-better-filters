@@ -35,8 +35,8 @@ gulp.task('chrome', function() {
     pipe('./img/**/*', './build/chrome/img'),
     pipe('./js/**/*', './build/chrome/js'),
     pipe('./css/**/*', './build/chrome/css'),
-    pipe('./vendor/chrome/browser.js', './build/chrome/js'),
-    pipe('./vendor/chrome/manifest.json', './build/chrome/')
+    pipe('./vendor/chrome/manifest.json', './build/chrome/'),
+    pipe('./node_modules/jquery/dist/jquery.js', './build/chrome/js/')
   );
 });
 
@@ -46,21 +46,9 @@ gulp.task('firefox', function() {
     pipe('./img/**/*', './build/firefox/data/img'),
     pipe('./js/**/*', './build/firefox/data/js'),
     pipe('./css/**/*', './build/firefox/data/css'),
-    pipe('./vendor/firefox/browser.js', './build/firefox/data/js'),
     pipe('./vendor/firefox/main.js', './build/firefox/data'),
-    pipe('./vendor/firefox/package.json', './build/firefox/')
-  );
-});
-
-gulp.task('safari', function() {
-  return es.merge(
-    pipe('./libs/**/*', './build/safari/likeastore.safariextension/libs'),
-    pipe('./img/**/*', './build/safari/likeastore.safariextension/img'),
-    pipe('./js/**/*', './build/safari/likeastore.safariextension/js'),
-    pipe('./css/**/*', './build/safari/likeastore.safariextension/css'),
-    pipe('./vendor/safari/browser.js', './build/safari/likeastore.safariextension/js'),
-    pipe('./vendor/safari/Info.plist', './build/safari/likeastore.safariextension'),
-    pipe('./vendor/safari/Settings.plist', './build/safari/likeastore.safariextension')
+    pipe('./vendor/firefox/package.json', './build/firefox/'),
+    pipe('./node_modules/jquery/dist/jquery.js', './build/firefox/js/')
   );
 });
 
@@ -75,16 +63,12 @@ gulp.task('firefox-dist', shell.task([
   'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx xpi --output-file=../../dist/firefox/firefox-extension-' + firefox.version + '.xpi > /dev/null',
 ]));
 
-gulp.task('safari-dist', function () {
-  pipe('./vendor/safari/Update.plist', './dist/safari');
-});
-
 gulp.task('firefox-run', shell.task([
   'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx run',
 ]));
 
 gulp.task('dist', function(cb) {
-  return rseq('clean', ['chrome', 'firefox', 'safari'], ['chrome-dist', 'firefox-dist', 'safari-dist'], cb);
+  return rseq('clean', ['chrome', 'firefox'], ['chrome-dist', 'firefox-dist'], cb);
 });
 
 gulp.task('watch', function() {
@@ -100,5 +84,5 @@ gulp.task('addons', shell.task([
 ]));
 
 gulp.task('default', function(cb) {
-  return rseq('clean', ['chrome', 'firefox', 'safari'], cb);
+  return rseq('clean', ['chrome', 'firefox'], cb);
 });

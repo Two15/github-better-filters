@@ -29,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/xcambar/browser-extention/issues"
   },
-  "homepage": "https://github.com/xcambar/browser-extention"
+  "homepage": "https://github.com/xcambar/browser-extention",
+  "dependencies": {
+    "jquery": "^2.1.4"
+  }
 }

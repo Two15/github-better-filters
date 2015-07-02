@@ -1,11 +1,50 @@
+.subnav-search-context {
+  float: right;
+}
 .subnav-search-context+.subnav-search .subnav-search-input {
   float: left;
   border-radius: 0;
 }
 
-.subnav-search-context+.subnav-search .filters_extension.btn {
+.subnav-search-context+.subnav-search .xc__.btn {
   float: left;
   border-top-left-radius: 0;
   border-left: 0;
   border-bottom-left-radius: 0;
+}
+
+.xc__.card_container {
+  position: relative;
+  perspective: 1000px;
+  float: right;
+}
+
+.xc__.card {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: all 0.3s linear;
+  transform-origin: right center;
+}
+.xc__.card.toggled {
+  transform: rotateX(180deg);
+}
+
+.xc__.face {
+  backface-visibility: hidden;
+}
+.xc__.card .face.front {
+  transition: visibility 0s 0s;
+}
+.xc__.card.toggled .face.front {
+  visibility: hidden;
+  transition: visibility 0s .3s;
+}
+.xc__.face.back {
+  position: absolute;
+  display: block;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transform: rotateX(180deg);
 }

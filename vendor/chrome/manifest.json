@@ -6,11 +6,12 @@
 
   "permissions": [],
   "content_scripts": [{
-    "run_at": "document_idle",
+    "run_at": "document_end",
     "css": [
       "css/content.css"
     ],
     "js": [
+      "js/jquery.js",
       "js/main.js"
     ],
     "matches": [
