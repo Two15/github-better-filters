@@ -1,4 +1,11 @@
 ;(function () {
+  var classPrefix = 'filters_extension';
+  var rootClassPrefix = classPrefix + 'Root';
+
+  function children(node) {
+    return Array.prototype.slice.call(node.childNodes);
+  }
+
   //Copied from https://gist.github.com/mathewbyrne/1280286
   function slugify () {
     return text.toString().toLowerCase()
@@ -12,8 +19,8 @@
   function createDOM (str) {
     var div = document.createElement('div');
     div.innerHTML = str;
-    return Array.prototype.slice.call(div.childNodes).map(function (node) {
-      node.className += ' filters_extension';
+    return children(div).map(function (node) {
+      node.className += ' ' + classPrefix;
       return node;
     });
   }
@@ -30,13 +37,32 @@
 
   console.log('Discover the APIs:', chrome);
 
-  var $filters = document.getElementsByClassName('subnav-search-context').item();
-  var $form = document.getElementsByClassName('subnav-search').item();
+  function maintainExtension(klass) {
+    if (!document.querySelectorAll('.' + klass).length) {
+      init();
+    } else {
+      setTimeout(maintainExtension.bind(undefined, klass), 200);
+    }
+  }
 
-  var $btn = createDOM('<a class="btn">Save</a>');
-  append($btn, $form);
+  function init () {
+    var $filters = document.getElementsByClassName('subnav-search-context').item();
+    var $form = document.getElementsByClassName('subnav-search').item();
+    $form.className = $form.className + ' ' + rootClassPrefix;
 
-  $form.addEventListener('submit', function () {
-    console.log('GO GO GO ');
-  });
+    var $btn = createDOM('<a class="btn">Save</a>');
+    append($btn, $form);
+
+    var $container = createDOM('<div></div>').pop();
+    append(children($form), $container);
+    append([$container], $form);
+
+    $form.addEventListener('submit', function () {
+      console.log('GO GO GO ');
+    });
+    maintainExtension(rootClassPrefix);
+  }
+
+  init();
+
 })();
