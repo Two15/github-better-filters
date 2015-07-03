@@ -138,8 +138,23 @@
       }
       return 0;
     })
-    .map(function (query) {
-      $list.prepend('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
+    .map(function (query, index) {
+      var $item = $('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
+      var $remove = $('<div class="octicon octicon-x right"></div>'); 
+      $item.find('.select-menu-item-text').append($remove);
+      $remove.on('click', function (e) {
+        if (confirm('Delete the query "' + query.name + '"?')) {
+          storage.splice(index, 1);
+          localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
+          $item.remove();
+        };
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      return $item;
+    })
+    .map(function (items) {
+      $list.prepend(items);
     });
     $list.prepend('<a class="select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');
   }
