@@ -55,10 +55,12 @@
 
   function initEditor () {
     log('initEditor');
+    var $faceA, $faceB, $card, $container;
 
-    function cancelSave (e) {
-      log('cancelSave');
+    function closeSave (e) {
+      log('closeSave');
       $card.removeClass('toggled');
+      $faceA.find('input[type=text]').focus();
       e.preventDefault();
     }
 
@@ -73,28 +75,25 @@
         filter: filter
       });
       localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
-      $card.removeClass('toggled');
+      closeSave(e);
     }
 
-
-    var $btn = $('<a class="xc__ btn step1">Save</a>');
-    var formWidth = $form.outerWidth();
-    $form.append($btn);
-
-    var $container = $('<div class="xc__ card_container"></div>');
-    var $card = $('<div class="xc__ card"></div>');
+    $container = $('<div class="xc__ card_container"></div>');
+    $card = $('<div class="xc__ card"></div>');
     $container.addClass(rootClassPrefix);
     $container.insertBefore($filters);
     $container.append($card);
-    $container.width(formWidth);
+    $container.width($form.outerWidth());
 
-    var $faceA = $('<div class="xc__ face"></div>');
+    //We do it now because we need the original form width above
+    $form.append($('<a class="xc__ btn step1">Save</a>'));
+
+    $faceA = $('<div class="xc__ face"></div>');
     $faceA.append('<div class="subnav-search-context"></div>');
     $faceA.append($form);
-    var $fix = $('<div class="xc__ clearfix"></div>');
-    $faceA.append($fix);
+    $faceA.append($('<div class="xc__ clearfix"></div>'));
 
-    var $faceB = $faceA.clone();
+    $faceB = $faceA.clone();
     $faceB.find('input[type=text]')
       .attr('placeholder', 'Name your favorite')
       .val('');
@@ -110,14 +109,15 @@
     $faceA.on('click', '.btn', function (e) {
       log('faceAClick');
       $card.addClass('toggled');
+      $faceB.find('input[type=text]').focus();
       e.preventDefault();
     });
-    $faceB.on('click', '.btn', cancelSave);
+    $faceB.on('click', '.btn', closeSave);
     $faceB.on('submit', 'form', doSave);
     $faceB.on('keyup', 'input[type=text]', function (e) {
       log('faceBKeyUp');
       if (e.keyCode === KEY_ESCAPE) {
-        cancelSave(e);
+        closeSave(e);
       }
     });
   }
@@ -126,7 +126,19 @@
     log('initSelector');
     var $list = $filters.find('.select-menu-list');
     $list.prepend('<a class="select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
-    storage.reverse().map(function (query) {
+    storage
+    .sort(function (a, b) {
+      var aName = a.name.toLowerCase();
+      var bName = b.name.toLowerCase();
+      if (aName > bName) {
+        return -1;
+      }
+      if (aName < bName) {
+        return 1;
+      }
+      return 0;
+    })
+    .map(function (query) {
       $list.prepend('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
     });
     $list.prepend('<a class="select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');
