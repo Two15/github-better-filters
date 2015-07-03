@@ -25,8 +25,10 @@
   function arrangeForm($form) {
     log('arrangeForm');
     var $input = $form.find('input[type=text]');
-    var $button = $form.find('.btn');
-    var buttonWidth = $button.outerWidth();
+    var $button = $form.find('.btn').toArray();
+    var buttonWidth = $button.reduce(function (sum, elt) {
+      return sum + $(elt).outerWidth();
+    }, 0);
     var inputMargins = $input.outerWidth() - $input.width();
     $input.width($form.outerWidth() - buttonWidth - inputMargins);
   }
@@ -59,6 +61,10 @@
     setTimeout(heartBeat, 200);
   }
 
+  function iconizedButton(icon) {
+    return $('<a class="xc__ btn step1"><span class="octicon octicon-' + icon + '"></span></a>');
+  }
+
   function initEditor () {
     log('initEditor');
     var $faceA, $faceB, $card, $container;
@@ -66,6 +72,7 @@
     function closeSave (e) {
       log('closeSave');
       $card.removeClass('toggled');
+      $faceB.find('input[type=text]').val('');
       $faceA.find('input[type=text]').focus();
       e.preventDefault();
     }
@@ -92,7 +99,7 @@
     $container.width($form.outerWidth());
 
     //We do it now because we need the original form width above
-    $form.append($('<a class="xc__ btn step1">Save</a>'));
+    $form.append(iconizedButton('bookmark'));
 
     $faceA = $('<div class="xc__ face"></div>');
     $faceA.append('<div class="subnav-search-context"></div>');
@@ -103,7 +110,12 @@
     $faceB.find('input[type=text]')
       .attr('placeholder', 'Name your favorite')
       .val('');
-    $faceB.find('a.btn').text('Cancel');
+    var $group = $('<div class="btn-group"></div>"')
+      .append(iconizedButton('check').addClass('text-open save'))
+      .append(iconizedButton('x').addClass('text-muted close'));
+    $faceB.find('a.btn')
+      .after($group)
+      .remove();
 
     $faceA.addClass('front');
     $faceB.addClass('back');
@@ -118,7 +130,8 @@
       $faceB.find('input[type=text]').focus();
       e.preventDefault();
     });
-    $faceB.on('click', '.btn', closeSave);
+    $faceB.on('click', '.close', closeSave);
+    $faceB.on('click', '.save', doSave);
     $faceB.on('submit', 'form', doSave);
     $faceB.on('keyup', 'input[type=text]', function (e) {
       log('faceBKeyUp');
