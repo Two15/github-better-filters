@@ -1,7 +1,7 @@
 {
-  "name": "browser-extension",
-  "version": "1.1.0",
-  "description": "Browser Extension Template and Tooling",
+  "name": "github-better-filters",
+  "version": "0.0.0",
+  "description": "Save your favorite filters when searching in github repos (Chrome and Firefox extension)",
   "main": "gulpfile.js",
   "devDependencies": {
     "event-stream": "~3.1.5",
@@ -19,17 +19,11 @@
     "url": "git://github.com/xcambar/browser-extention.git"
   },
   "author": "Xavier Cambar <xcambar@gmail.com>",
-  "contributors": [
-    {
-      "name": "Alexander Beletsky",
-      "email": "alexander.beletsky@gmail.com"
-    }
-  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xcambar/browser-extention/issues"
+    "url": "https://github.com/xcambar/github-better-filters/issues"
   },
-  "homepage": "https://github.com/xcambar/browser-extention",
+  "homepage": "https://github.com/xcambar/github-better-filters",
   "dependencies": {
     "jquery": "^2.1.4"
   }

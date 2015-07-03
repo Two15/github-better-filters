@@ -1,21 +1,19 @@
-# Likeastore Browser Extention
+# Github Better Filters
 
-Augments Google search results with search from your likes.
+Save your favorite filters when searching in github repos (Chrome and Firefox extension)
 
 ## Supported Browsers
 
-* [Chrome](https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad)
-* [Firefox](https://addons.mozilla.org/en-US/firefox/addon/likeastore-social-bookmarking-/)
+* Chrome
+* Firefox
 
 ## Development
 
-All changes have to be applied into `/js`, `/css`, `/img` folders. To build the sources into corresponding packages run,
-
 ```bash
-$ gulp
+$ gulp watch
 ```
 
-The `/build` folder is created. It's recommened to use Chome for development, since it's very easy to create extension from folder with sources.
+The built extensions are located in `/build`.
 
 ## Distribution
 
@@ -33,4 +31,4 @@ The `/dist` folder will contain ready to dist packages.
 
 # License
 
-MIT info@likeastore.com
+MIT - Xavier Cambar _(contact email is easy to find)_
