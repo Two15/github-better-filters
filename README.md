@@ -6,7 +6,6 @@ Augments Google search results with search from your likes.
 
 * [Chrome](https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad)
 * [Firefox](https://addons.mozilla.org/en-US/firefox/addon/likeastore-social-bookmarking-/)
-* [Safari](http://addons.likeastore.com/files/safari/likeastore.safariextz)
 
 ## Development
 
@@ -30,7 +29,7 @@ Once the changes are in-place and ready for distribution:
 $ gulp dist
 ```
 
-The `/dist` folder will contain ready to dist packages (except of Safari, that require manual build).
+The `/dist` folder will contain ready to dist packages.
 
 # License
 
