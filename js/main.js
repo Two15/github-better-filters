@@ -25,9 +25,9 @@
     log('arrangeForm');
     var $input = $form.find('input[type=text]');
     var $button = $form.find('.btn');
-    var inputWidth = $input.outerWidth();
     var buttonWidth = $button.outerWidth();
-    $input.width(inputWidth - buttonWidth);
+    var inputMargins = $input.outerWidth() - $input.width();
+    $input.width($form.outerWidth() - buttonWidth - inputMargins);
   }
 
   var storage = window.localStorage;
@@ -78,13 +78,15 @@
 
 
     var $btn = $('<a class="xc__ btn step1">Save</a>');
+    var formWidth = $form.outerWidth();
+    $form.append($btn);
 
     var $container = $('<div class="xc__ card_container"></div>');
     var $card = $('<div class="xc__ card"></div>');
     $container.addClass(rootClassPrefix);
     $container.insertBefore($filters);
-    $form.append($btn);
     $container.append($card);
+    $container.width(formWidth);
 
     var $faceA = $('<div class="xc__ face"></div>');
     $faceA.append('<div class="subnav-search-context"></div>');
