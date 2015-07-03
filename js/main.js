@@ -74,6 +74,7 @@
       $card.removeClass('toggled');
       $faceB.find('input[type=text]').val('');
       $faceA.find('input[type=text]').focus();
+      $faceB.find('.save').addClass('disabled');
       e.preventDefault();
     }
 
@@ -81,14 +82,16 @@
       log('doSave');
       e.stopPropagation();
       e.preventDefault();
-      var filter = $faceA.find("input[type=text]").val();
       var name = $faceB.find("input[type=text]").val();
-      storage.push({
-        name: name,
-        filter: filter
-      });
-      saveQueries();
-      closeSave(e);
+      if (name) {
+        var filter = $faceA.find("input[type=text]").val();
+        storage.push({
+          name: name,
+          filter: filter
+        });
+        saveQueries();
+        closeSave(e);
+      }
     }
 
     $container = $('<div class="xc__ card_container"></div>');
@@ -111,7 +114,7 @@
       .attr('placeholder', 'Name your favorite')
       .val('');
     var $group = $('<div class="btn-group"></div>"')
-      .append(iconizedButton('check').addClass('text-open save'))
+      .append(iconizedButton('check').addClass('text-open save disabled'))
       .append(iconizedButton('x').addClass('text-muted close'));
     $faceB.find('a.btn')
       .after($group)
@@ -137,6 +140,11 @@
       log('faceBKeyUp');
       if (e.keyCode === KEY_ESCAPE) {
         closeSave(e);
+      }
+      if ($faceB.find('[type=text]').val()) {
+        $faceB.find('.save').removeClass('disabled');
+      } else {
+        $faceB.find('.save').addClass('disabled');
       }
     });
   }
