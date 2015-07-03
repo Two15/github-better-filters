@@ -10,6 +10,7 @@
   function log () {
     console.log.apply(console, ['GITHUB FILTERS EXTENSION'].concat(Array.prototype.slice.call(arguments)));
   };
+
   //Copied from https://gist.github.com/mathewbyrne/1280286
   function slugify () {
     log('slugify');
@@ -38,6 +39,11 @@
     }
   } catch (e) {
     storage = [];
+  }
+
+  function saveQueries() {
+    localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
+    initSelector();
   }
 
   function heartBeat() {
@@ -74,7 +80,7 @@
         name: name,
         filter: filter
       });
-      localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
+      saveQueries();
       closeSave(e);
     }
 
@@ -124,8 +130,9 @@
 
   function initSelector() {
     log('initSelector');
+    $filters.find('.xc__').remove(); // Flush
     var $list = $filters.find('.select-menu-list');
-    $list.prepend('<a class="select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
+    $list.prepend('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
     storage
     .sort(function (a, b) {
       var aName = a.name.toLowerCase();
@@ -145,7 +152,7 @@
       $remove.on('click', function (e) {
         if (confirm('Delete the query "' + query.name + '"?')) {
           storage.splice(index, 1);
-          localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
+          saveQueries();
           $item.remove();
         };
         e.preventDefault();
@@ -154,9 +161,11 @@
       return $item;
     })
     .map(function (items) {
+      items.addClass('xc__');
       $list.prepend(items);
     });
-    $list.prepend('<a class="select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');
+    var $header = $('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');
+    $list.prepend($header);
   }
 
   function initAnchors() {
