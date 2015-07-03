@@ -7,13 +7,8 @@
   var $filters;
   var $form;
 
-  function log () {
-    console.log.apply(console, ['GITHUB FILTERS EXTENSION'].concat(Array.prototype.slice.call(arguments)));
-  };
-
   //Copied from https://gist.github.com/mathewbyrne/1280286
   function slugify () {
-    log('slugify');
     return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
@@ -23,7 +18,6 @@
   }
 
   function arrangeForm($form) {
-    log('arrangeForm');
     var $input = $form.find('input[type=text]');
     var $button = $form.find('.btn').toArray();
     var buttonWidth = $button.reduce(function (sum, elt) {
@@ -49,7 +43,6 @@
   }
 
   function heartBeat() {
-    log('heartBeat');
     if (!$('.' + rootClassPrefix).length) {
       setTimeout(function () {
         if (initAnchors()) {
@@ -66,11 +59,9 @@
   }
 
   function initEditor () {
-    log('initEditor');
     var $faceA, $faceB, $card, $container;
 
     function closeSave (e) {
-      log('closeSave');
       $card.removeClass('toggled');
       $faceB.find('input[type=text]').val('');
       $faceA.find('input[type=text]').focus();
@@ -79,7 +70,6 @@
     }
 
     function doSave (e) {
-      log('doSave');
       e.stopPropagation();
       e.preventDefault();
       var name = $faceB.find("input[type=text]").val();
@@ -128,7 +118,6 @@
     arrangeForm($faceB);
 
     $faceA.on('click', '.btn', function (e) {
-      log('faceAClick');
       $card.addClass('toggled');
       $faceB.find('input[type=text]').focus();
       e.preventDefault();
@@ -137,7 +126,6 @@
     $faceB.on('click', '.save', doSave);
     $faceB.on('submit', 'form', doSave);
     $faceB.on('keyup', 'input[type=text]', function (e) {
-      log('faceBKeyUp');
       if (e.keyCode === KEY_ESCAPE) {
         closeSave(e);
       }
@@ -150,7 +138,6 @@
   }
 
   function initSelector() {
-    log('initSelector');
     $filters.find('.xc__').remove(); // Flush
     var $list = $filters.find('.select-menu-list');
     $list.prepend('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
