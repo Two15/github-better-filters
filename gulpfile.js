@@ -1,11 +1,14 @@
+var _        = require('lodash');
 var gulp     = require('gulp');
 var clean    = require('gulp-rimraf');
 var es       = require('event-stream');
 var rseq     = require('run-sequence');
 var zip      = require('gulp-zip');
 var shell    = require('gulp-shell');
+var json     = require('gulp-json-editor');
 var chrome   = require('./vendor/chrome/manifest');
 var firefox  = require('./vendor/firefox/package');
+var package  = require('./package');
 
 function pipe(src, transforms, dest) {
   if (typeof transforms === 'string') {
@@ -30,12 +33,21 @@ gulp.task('clean', function() {
 });
 
 gulp.task('chrome', function() {
+  function  manifestTransform() {
+    return json({
+      version: package.version,
+      name: package.name.split('-').map(_.capitalize).join(' '),
+      description: package.description,
+      author: package.author,
+      homepage_url: package.homepage
+    });
+  }
   return es.merge(
     pipe('./libs/**/*', './build/chrome/libs'),
     pipe('./img/**/*', './build/chrome/img'),
     pipe('./js/**/*', './build/chrome/js'),
     pipe('./css/**/*', './build/chrome/css'),
-    pipe('./vendor/chrome/manifest.json', './build/chrome/'),
+    pipe('./vendor/chrome/manifest.json', [manifestTransform()], './build/chrome/'),
     pipe('./node_modules/jquery/dist/jquery.js', './build/chrome/js/')
   );
 });

@@ -3,7 +3,9 @@
   "name": "My extension",
   "description": "This is the right place for a description",
   "version": "0.0.0",
-
+  "default_locale": "en",
+  "author": "",
+  "homepage_url": "",
   "permissions": [],
   "content_scripts": [{
     "run_at": "document_end",
