@@ -69,6 +69,11 @@ html, body {
   text-align: center;
 }
 
+.center {
+  display: block;
+  margin: 0 auto;
+}
+
 header .mega-octicon {
   font-size: 128px;
   margin-bottom: 0.3em;
@@ -79,8 +84,25 @@ header h1 {
   font-size: 45px;
 }
 
+.download-big {
+  font-size: 1.75em;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
 
+.download-big > .pure-button {
+  display: block;
+}
 
+.howto h2 {
+  font-weight: lighter;
+  font-size: 2.7em;
+  position: relative;
+  top: 1em;
+}
+.howto .pure-img {
+  margin: 2em 0;
+}
 
 
 
