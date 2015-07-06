@@ -6,7 +6,6 @@ var rseq     = require('run-sequence');
 var zip      = require('gulp-zip');
 var shell    = require('gulp-shell');
 var json     = require('gulp-json-editor');
-var chrome   = require('./vendor/chrome/manifest');
 var firefox  = require('./vendor/firefox/package');
 var package  = require('./package');
 
@@ -66,7 +65,7 @@ gulp.task('firefox', function() {
 
 gulp.task('chrome-dist', function () {
   gulp.src('./build/chrome/**/*')
-    .pipe(zip('chrome-extension-' + chrome.version + '.zip'))
+    .pipe(zip('chrome-extension-' + package.version + '.zip'))
     .pipe(gulp.dest('./dist/chrome'));
 });
 
