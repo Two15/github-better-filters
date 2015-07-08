@@ -1,11 +1,11 @@
 ;(function (window, self) {
-	var app = window.app = window.app || {};
+  var app = window.app = window.app || {};
 
-	app.browser = {
-		name: 'Firefox',
+  app.browser = {
+    name: 'Firefox',
 
-		getUrl: function (url) {
-			return self.options.rootUrl + url;
-		}
-	};
+    getUrl: function (url) {
+      return self.options.rootUrl + url;
+    }
+  };
 })(window, self);

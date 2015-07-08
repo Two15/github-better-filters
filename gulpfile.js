@@ -6,7 +6,6 @@ var rseq     = require('run-sequence');
 var zip      = require('gulp-zip');
 var shell    = require('gulp-shell');
 var json     = require('gulp-json-editor');
-var firefox  = require('./vendor/firefox/package');
 var package  = require('./package');
 
 function pipe(src, transforms, dest) {
@@ -31,13 +30,18 @@ gulp.task('clean', function() {
   return pipe('./build', [clean()]);
 });
 
+function  manifestTransform() {
+  return json({
+    version: package.version,
+    description: package.description,
+    author: package.author
+  });
+}
+
 gulp.task('chrome', function() {
-  function  manifestTransform() {
+  function  chromeTransform() {
     return json({
-      version: package.version,
       name: package.name.split('-').map(_.capitalize).join(' '),
-      description: package.description,
-      author: package.author,
       homepage_url: package.homepage
     });
   }
@@ -46,19 +50,31 @@ gulp.task('chrome', function() {
     pipe('./img/**/*', './build/chrome/img'),
     pipe('./js/**/*', './build/chrome/js'),
     pipe('./css/**/*', './build/chrome/css'),
-    pipe('./vendor/chrome/manifest.json', [manifestTransform()], './build/chrome/'),
+    pipe('./vendor/chrome/manifest.json', [manifestTransform(), chromeTransform()], './build/chrome/'),
     pipe('./node_modules/jquery/dist/jquery.js', './build/chrome/js/')
   );
 });
 
 gulp.task('firefox', function() {
+  function firefoxTransform() {
+    return json({
+      name: package.name,
+      fullName: package.name.split('-').map(_.capitalize).join(' '),
+      description: package.description,
+      author: package.author,
+      homepage_url: package.homepage,
+      license: package.license,
+      contributors: package.contributors,
+      url: package.homepage
+    });
+  }
   return es.merge(
     pipe('./libs/**/*', './build/firefox/data/libs'),
     pipe('./img/**/*', './build/firefox/data/img'),
     pipe('./js/**/*', './build/firefox/data/js'),
     pipe('./css/**/*', './build/firefox/data/css'),
     pipe('./vendor/firefox/main.js', './build/firefox/data'),
-    pipe('./vendor/firefox/package.json', './build/firefox/'),
+    pipe('./vendor/firefox/package.json', [manifestTransform(), firefoxTransform()], './build/firefox/'),
     pipe('./node_modules/jquery/dist/jquery.js', './build/firefox/js/')
   );
 });
@@ -71,7 +87,7 @@ gulp.task('chrome-dist', function () {
 
 gulp.task('firefox-dist', shell.task([
   'mkdir -p dist/firefox',
-  'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx xpi --output-file=../../dist/firefox/firefox-extension-' + firefox.version + '.xpi > /dev/null',
+  'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx xpi --output-file=../../dist/firefox/firefox-extension-' + package.version + '.xpi > /dev/null',
 ]));
 
 gulp.task('firefox-run', shell.task([
@@ -89,10 +105,6 @@ gulp.task('watch', function() {
 gulp.task('run', function (cb) {
   return rseq('firefox', 'firefox-run', cb);
 });
-
-gulp.task('addons', shell.task([
-  'cp -R ./dist ../addons'
-]));
 
 gulp.task('default', function(cb) {
   return rseq('clean', ['chrome', 'firefox'], cb);
