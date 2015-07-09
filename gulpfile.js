@@ -50,6 +50,7 @@ gulp.task('chrome', function() {
     pipe('./img/**/*', './build/chrome/img'),
     pipe('./js/**/*', './build/chrome/js'),
     pipe('./css/**/*', './build/chrome/css'),
+    pipe('./vendor/chrome/*.js', './build/chrome/'),
     pipe('./vendor/chrome/manifest.json', [manifestTransform(), chromeTransform()], './build/chrome/'),
     pipe('./node_modules/jquery/dist/jquery.js', './build/chrome/js/')
   );
@@ -59,10 +60,10 @@ gulp.task('firefox', function() {
   function firefoxTransform() {
     return json({
       name: package.name,
-      fullName: package.name.split('-').map(_.capitalize).join(' '),
+      title: package.name.split('-').map(_.capitalize).join(' '),
       description: package.description,
       author: package.author,
-      homepage_url: package.homepage,
+      homepage: package.homepage,
       license: package.license,
       contributors: package.contributors,
       url: package.homepage
@@ -73,9 +74,9 @@ gulp.task('firefox', function() {
     pipe('./img/**/*', './build/firefox/data/img'),
     pipe('./js/**/*', './build/firefox/data/js'),
     pipe('./css/**/*', './build/firefox/data/css'),
-    pipe('./vendor/firefox/main.js', './build/firefox/data'),
+    pipe('./vendor/firefox/*.js', './build/firefox/data'),
     pipe('./vendor/firefox/package.json', [manifestTransform(), firefoxTransform()], './build/firefox/'),
-    pipe('./node_modules/jquery/dist/jquery.js', './build/firefox/js/')
+    pipe('./node_modules/jquery/dist/jquery.js', './build/firefox/data/js/')
   );
 });
 
@@ -87,11 +88,12 @@ gulp.task('chrome-dist', function () {
 
 gulp.task('firefox-dist', shell.task([
   'mkdir -p dist/firefox',
-  'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx xpi --output-file=../../dist/firefox/firefox-extension-' + package.version + '.xpi > /dev/null',
+  'cd ./build/firefox && ../../node_modules/.bin/jpm xpi',
+  'mv ./build/firefox/*.xpi ./dist/firefox/firefox-extension-' + package.version + '.xpi'
 ]));
 
 gulp.task('firefox-run', shell.task([
-  'cd ./build/firefox && ../../tools/addon-sdk-1.16/bin/cfx run',
+  'cd ./build/firefox && ../../node_modules/.bin/jpm run',
 ]));
 
 gulp.task('dist', function(cb) {

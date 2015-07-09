@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/xcambar/github-better-filters",
   "dependencies": {
+    "jpm": "^1.0.0",
     "jquery": "^2.1.4"
   }
 }

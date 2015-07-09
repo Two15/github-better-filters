@@ -12,6 +12,7 @@
       "css/content.css"
     ],
     "js": [
+      "browser.js",
       "js/jquery.js",
       "js/main.js"
     ],

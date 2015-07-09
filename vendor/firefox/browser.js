@@ -8,4 +8,4 @@
       return self.options.rootUrl + url;
     }
   };
-})(window, self);
+})(window, this);
