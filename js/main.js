@@ -27,19 +27,32 @@
     $input.width($form.outerWidth() - buttonWidth - inputMargins);
   }
 
-  var storage = window.localStorage;
-  try {
-    storage = JSON.parse(storage[chrome.runtime.id]);
-    if (!(storage instanceof Array)) {
-      throw '';
-    }
-  } catch (e) {
-    storage = [];
+  writeFilters = app.browser.data;
+
+  function readFilters() {
+    return app.browser.data().then(function (data) {
+      if (!(data.filters instanceof Array)) {
+        data.filters = [];
+      }
+      return data;
+    }, function (e) {
+      return { filters: [] };
+    }).then(function (data) {
+      return data.filters;
+    });
   }
 
-  function saveQueries() {
-    localStorage.setItem(chrome.runtime.id, JSON.stringify(storage));
-    initSelector();
+  app.browser.onDataUpdate(initSelector);
+
+  function deleteFilter(filter, index, e) {
+    if (confirm('Delete the query "' + filter.name + '"?')) {
+      readFilters().then(function (filters) {
+        filters.splice(index, 1);
+        return filters;
+      }).then(writeFilters);
+    };
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   function heartBeat() {
@@ -75,12 +88,17 @@
       var name = $faceB.find("input[type=text]").val();
       if (name) {
         var filter = $faceA.find("input[type=text]").val();
-        storage.push({
-          name: name,
-          filter: filter
+        readFilters().then(function (filters) {
+          filters.push({
+            name: name,
+            filter: filter
+          });
+          return filters;
+        })
+        .then(writeFilters)
+        .then(function () {
+          closeSave(e);
         });
-        saveQueries();
-        closeSave(e);
       }
     }
 
@@ -137,43 +155,46 @@
     });
   }
 
+  function sortByName(a, b) {
+    var aName = a.name.toLowerCase();
+    var bName = b.name.toLowerCase();
+    if (aName > bName) {
+      return -1;
+    }
+    if (aName < bName) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function queryToElt(query, index) {
+    var $item = $('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
+    var $remove = $('<div class="octicon octicon-x right"></div>');
+    $item.find('.select-menu-item-text').append($remove);
+    $remove.on('click', deleteFilter.bind(null, query, index));
+    return $item;
+  }
+
   function initSelector() {
+    if (!$filters.length) {
+      return;
+    }
     $filters.find('.xc__').remove(); // Flush
     var $list = $filters.find('.select-menu-list');
-    $list.prepend('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
-    storage
-    .sort(function (a, b) {
-      var aName = a.name.toLowerCase();
-      var bName = b.name.toLowerCase();
-      if (aName > bName) {
-        return -1;
-      }
-      if (aName < bName) {
-        return 1;
-      }
-      return 0;
-    })
-    .map(function (query, index) {
-      var $item = $('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
-      var $remove = $('<div class="octicon octicon-x right"></div>'); 
-      $item.find('.select-menu-item-text').append($remove);
-      $remove.on('click', function (e) {
-        if (confirm('Delete the query "' + query.name + '"?')) {
-          storage.splice(index, 1);
-          saveQueries();
-          $item.remove();
-        };
-        e.preventDefault();
-        e.stopPropagation();
-      });
-      return $item;
-    })
-    .map(function (items) {
-      items.addClass('xc__');
-      $list.prepend(items);
-    });
     var $header = $('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');
-    $list.prepend($header);
+    $list.prepend('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Predefined Queries:</strong></div></a>');
+    readFilters().then(function (filters) {
+      return filters.sort(sortByName);
+    }).then(function (filters) {
+      return filters
+      .map(queryToElt)
+      .map(function (items) {
+        items.addClass('xc__');
+        $list.prepend(items);
+      });
+    }).then(function () {
+      $list.prepend($header);
+    });
   }
 
   function initAnchors() {

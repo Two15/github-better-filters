@@ -5,7 +5,9 @@
   "version": "0.0.0",
   "author": "",
   "homepage_url": "",
-  "permissions": [],
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [{
     "run_at": "document_end",
     "css": [
