@@ -1,4 +1,5 @@
 var pageMod = require('sdk/page-mod');
+var storage = require('sdk/simple-storage');
 
 pageMod.PageMod({
   include: "*.github.com",
@@ -9,5 +10,14 @@ pageMod.PageMod({
   ],
   contentStyleFile: [
     "./css/content.css"
-  ]
+  ],
+  onAttach: function (worker) {
+    worker.port.on('get-storage', function () {
+      worker.port.emit('send-storage', storage.storage);
+    });
+    worker.port.on('update-storage', function (filters) {
+      storage.storage.filters = filters;
+      worker.port.emit('save-storage', storage.storage);
+    });
+  }
 });
