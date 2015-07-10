@@ -65,6 +65,10 @@ html, body {
   color: #433F3C;
 }
 
+li {
+  list-style-type: none;
+}
+
 .text-center {
   text-align: center;
 }
@@ -86,12 +90,20 @@ header h1 {
 
 .download-big {
   font-size: 1.75em;
+}
+
+.spaced {
   margin-top: 3em;
   margin-bottom: 3em;
 }
 
 .download-big > .pure-button {
   display: block;
+}
+
+.alternative {
+  display: block;
+  text-align: center;
 }
 
 .howto h2 {
@@ -105,7 +117,9 @@ header h1 {
 }
 
 
-
+footer {
+  margin: 1em 0;
+}
 
 
 
