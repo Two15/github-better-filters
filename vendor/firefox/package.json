@@ -9,5 +9,5 @@
     "title": "", 
     "main": "data/main", 
     "permissions": {}, 
-    "icon": ""
+    "icon": "data/img/icons/48.png"
 }

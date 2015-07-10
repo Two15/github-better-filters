@@ -22,6 +22,11 @@
       "*://*.github.com/*"
     ]
   }],
-  "icons" : {},
+  "icons" : {
+    "16": "img/icons/16.png",
+    "32": "img/icons/32.png",
+    "48": "img/icons/48.png",
+    "128": "img/icons/128.png"
+  },
   "web_accessible_resources": []
 }
