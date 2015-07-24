@@ -17,14 +17,15 @@
     .replace(/-+$/, '');            // Trim - from end of text
   }
 
-  function arrangeForm($form) {
-    var $input = $form.find('input[type=text]');
-    var $button = $form.find('.btn').toArray();
+  function arrangeForm($face) {
+    var $faceForm = $face.find('form');
+    var $input = $faceForm.find('input[type=text]');
+    var $button = $faceForm.find('.btn').toArray();
     var buttonWidth = $button.reduce(function (sum, elt) {
       return sum + $(elt).outerWidth();
     }, 0);
     var inputMargins = $input.outerWidth() - $input.width();
-    $input.width($form.outerWidth() - buttonWidth - inputMargins);
+    $input.width($faceForm.width() - buttonWidth - inputMargins);
   }
 
   writeFilters = app.browser.data;
