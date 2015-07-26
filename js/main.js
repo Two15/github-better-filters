@@ -3,6 +3,14 @@
   var rootClassPrefix = classPrefix + 'Root';
   var KEY_ENTER = 13;
   var KEY_ESCAPE = 27;
+  var animationEvents = [
+    'webkitAnimationEnd',
+    'mozAnimationEnd',
+    'MSAnimationEnd',
+    'oanimationend',
+    'animationend'
+  ];
+  var animateClass = 'swing';
 
   var $filters;
   var $form;
@@ -78,8 +86,8 @@
     function closeSave (e) {
       $card.removeClass('toggled');
       $faceB.find('input[type=text]').val('');
-      $faceA.find('input[type=text]').focus();
       $faceB.find('.save').addClass('disabled');
+      $faceA.find('input[type=text]').focus();
       e.preventDefault();
     }
 
@@ -98,6 +106,7 @@
         })
         .then(writeFilters)
         .then(function () {
+          $filters.addClass(animateClass);
           closeSave(e);
         });
       }
@@ -180,6 +189,10 @@
     if (!$filters.length) {
       return;
     }
+    $filters.addClass('animated'); //Animate.css
+    $filters.on(animationEvents.join(' '), function () {
+      $filters.removeClass(animateClass);
+    });
     $filters.find('.xc__').remove(); // Flush
     var $list = $filters.find('.select-menu-list');
     var $header = $('<a class="xc__ select-menu-item js-navigation-item"><div class="select-menu-item-text"> <strong>Your Queries:</strong></div></a>');

@@ -11,7 +11,8 @@
   "content_scripts": [{
     "run_at": "document_end",
     "css": [
-      "css/content.css"
+      "css/content.css",
+      "css/vendor/animate.css"
     ],
     "js": [
       "browser.js",
