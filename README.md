@@ -10,7 +10,7 @@ Save your favorite filters when searching in github repos (Chrome and Firefox ex
 ## Development
 
 ```bash
-$ gulp watch
+$ npm run dev
 ```
 
 The built extensions are located in `/build`.
@@ -24,7 +24,7 @@ Once the changes are in-place and ready for distribution:
 3. Run `dist`.
 
 ```bash
-$ gulp dist
+$ npm run build
 ```
 
 The `/dist` folder will contain ready to dist packages.
