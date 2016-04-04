@@ -1,3 +1,5 @@
+/*global app:true */
+
 ;(function () {
   var classPrefix = 'filters_extension';
   var rootClassPrefix = classPrefix + 'Root';
@@ -15,16 +17,6 @@
   var $filters;
   var $form;
 
-  //Copied from https://gist.github.com/mathewbyrne/1280286
-  function slugify () {
-    return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
-  }
-
   function arrangeForm($face) {
     var $faceForm = $face.find('form');
     var $input = $faceForm.find('input[type=text]');
@@ -36,7 +28,7 @@
     $input.width($faceForm.width() - buttonWidth - inputMargins);
   }
 
-  writeFilters = app.browser.data;
+  var writeFilters = app.browser.data;
 
   function readFilters() {
     return app.browser.data().then(function (data) {
@@ -54,12 +46,12 @@
   app.browser.onDataUpdate(initSelector);
 
   function deleteFilter(filter, index, e) {
-    if (confirm('Delete the query "' + filter.name + '"?')) {
+    if (window.confirm('Delete the query "' + filter.name + '"?')) {
       readFilters().then(function (filters) {
         filters.splice(index, 1);
         return filters;
       }).then(writeFilters);
-    };
+    }
     e.preventDefault();
     e.stopPropagation();
   }
