@@ -29,8 +29,9 @@
   },
   "homepage": "https://github.com/xcambar/github-better-filters",
   "dependencies": {
+    "animate.css": "^3.3.1",
     "jpm": "^1.0.0",
     "jquery": "^2.1.4",
-    "animate.css": "^3.3.1"
+    "octicons": "^3.5.0"
   }
 }

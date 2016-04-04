@@ -12,7 +12,8 @@
     "run_at": "document_end",
     "css": [
       "css/content.css",
-      "css/vendor/animate.css"
+      "css/vendor/animate.css",
+      "css/vendor/octicons.css"
     ],
     "js": [
       "browser.js",
