@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Save your favorite filters when searching in github repos",
   "main": "gulpfile.js",
+  "firefox_id": "@github-better-filters",
   "devDependencies": {
     "event-stream": "~3.1.5",
     "gulp": "~3.9.0",

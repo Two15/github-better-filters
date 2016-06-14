@@ -64,6 +64,7 @@ gulp.task('chrome', function() {
 gulp.task('firefox', function() {
   function firefoxTransform() {
     return json({
+      id: package.firefox_id,
       name: package.name,
       title: package.name.split('-').map(_.capitalize).join(' '),
       description: package.description,
