@@ -10,8 +10,7 @@ pageMod.PageMod({
   ],
   contentStyleFile: [
     "./css/content.css",
-    "./css/vendor/animate.css",
-    "./css/vendor/octicons.css"
+    "./css/vendor/animate.css"
   ],
   onAttach: function (worker) {
     worker.port.on('get-storage', function () {

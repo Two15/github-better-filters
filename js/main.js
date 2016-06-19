@@ -68,8 +68,25 @@
     setTimeout(heartBeat, 200);
   }
 
-  function iconizedButton(icon) {
-    return $('<a class="xc__ btn step1"><span class="octicon octicon-' + icon + '"></span></a>');
+  function icon(icon) {
+    var boxes = {
+      bookmark: '0 0 10 16',
+      check: '0 0 12 16',
+      x: '0 0 12 16'
+    };
+    var paths = {
+      bookmark: 'M9 0H1C.27 0 0 .27 0 1v15l5-3.09L10 16V1c0-.73-.27-1-1-1zm-.78 4.25L6.36 5.61l.72 2.16c.06.22-.02.28-.2.17L5 6.6 3.12 7.94c-.19.11-.25.05-.2-.17l.72-2.16-1.86-1.36c-.17-.16-.14-.23.09-.23l2.3-.03.7-2.16h.25l.7 2.16 2.3.03c.23 0 .27.08.09.23h.01z',
+      check: 'M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z',
+      x: 'M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z'
+    };
+    var svg = '<svg aria-hidden="true" class="octicon" height="16" version="1.1" viewBox="' + boxes[icon]  + '" width="16">';
+    svg += '<path d="' + paths[icon] + '"></path>';
+    svg += '</svg>';
+    return svg;
+  }
+
+  function iconizedButton(iconName) {
+    return $('<a class="xc__ btn step1">' + icon(iconName) + '</a>');
   }
 
   function initEditor () {
@@ -161,17 +178,17 @@
     var aName = a.name.toLowerCase();
     var bName = b.name.toLowerCase();
     if (aName > bName) {
-      return -1;
+      return 1;
     }
     if (aName < bName) {
-      return 1;
+      return -1;
     }
     return 0;
   }
 
   function queryToElt(query, index) {
     var $item = $('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
-    var $remove = $('<div class="octicon octicon-x right"></div>');
+    var $remove = $('<div class="ib"></div>').append(icon('x'));
     $item.find('.select-menu-item-text').append($remove);
     $remove.on('click', deleteFilter.bind(null, query, index));
     return $item;

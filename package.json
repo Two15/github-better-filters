@@ -6,11 +6,12 @@
   "firefox_id": "@github-better-filters",
   "devDependencies": {
     "event-stream": "~3.1.5",
-    "gulp": "~3.9.0",
+    "gulp": "^3.9.1",
     "gulp-json-editor": "^2.2.1",
     "gulp-rimraf": "~0.1.1",
     "gulp-shell": "^0.2.5",
     "gulp-zip": "~0.3.4",
+    "jpm": "^1.0.7",
     "lodash": "^3.10.0",
     "run-sequence": "~0.3.2"
   },
@@ -31,8 +32,6 @@
   "homepage": "https://github.com/xcambar/github-better-filters",
   "dependencies": {
     "animate.css": "^3.3.1",
-    "jpm": "^1.0.0",
-    "jquery": "^2.1.4",
-    "octicons": "^3.5.0"
+    "jquery": "^2.1.4"
   }
 }
