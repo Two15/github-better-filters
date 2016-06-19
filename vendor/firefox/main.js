@@ -6,6 +6,7 @@ pageMod.PageMod({
   contentScriptFile: [
     './browser.js',
     './js/jquery.js',
+    './js/uuid.js',
     './js/main.js'
   ],
   contentStyleFile: [

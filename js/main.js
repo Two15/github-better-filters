@@ -1,4 +1,4 @@
-/*global app:true */
+/*global app, uuid */
 
 ;(function () {
   var classPrefix = 'filters_extension';
@@ -40,16 +40,25 @@
       return { filters: [] };
     }).then(function (data) {
       return data.filters;
+    }).then(function (filters) {
+      return filters.map(function(filter) {
+        // Backward compatibility when 1.2.0 did not have UUID
+        if (!filter.uuid) {
+          filter.uuid = uuid();
+        }
+        return filter;
+      });
     });
   }
 
   app.browser.onDataUpdate(initSelector);
 
-  function deleteFilter(filter, index, e) {
+  function deleteFilter(filter, e) {
     if (window.confirm('Delete the query "' + filter.name + '"?')) {
       readFilters().then(function (filters) {
-        filters.splice(index, 1);
-        return filters;
+        return filters.filter(function (f) {
+          return f.uuid !== filter.uuid;
+        });
       }).then(writeFilters);
     }
     e.preventDefault();
@@ -108,6 +117,7 @@
         var filter = $faceA.find("input[type=text]").val();
         readFilters().then(function (filters) {
           filters.push({
+            uuid: uuid(),
             name: name,
             filter: filter
           });
@@ -190,7 +200,7 @@
     var $item = $('<a href="' + window.location.pathname + '?q='+ encodeURIComponent(query.filter) + '" class="select-menu-item js-navigation-item"><div class="select-menu-item-text">' + query.name + '</div></a>');
     var $remove = $('<div class="ib"></div>').append(icon('x'));
     $item.find('.select-menu-item-text').append($remove);
-    $remove.on('click', deleteFilter.bind(null, query, index));
+    $remove.on('click', deleteFilter.bind(null, query));
     return $item;
   }
 
@@ -211,11 +221,12 @@
     }).then(function (filters) {
       return filters
       .map(queryToElt)
-      .map(function (items) {
-        items.addClass('xc__');
-        $list.prepend(items);
+      .map(function (item) {
+        item.addClass('xc__');
+        return item;
       });
-    }).then(function () {
+    }).then(function (filters) {
+      $list.prepend(filters);
       $list.prepend($header);
     });
   }
