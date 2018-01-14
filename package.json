@@ -5,19 +5,19 @@
   "main": "gulpfile.js",
   "firefox_id": "@github-better-filters",
   "devDependencies": {
-    "event-stream": "~3.1.5",
+    "event-stream": "~3.3.4",
     "gulp": "^3.9.1",
     "gulp-json-editor": "^2.2.1",
-    "gulp-rimraf": "~0.1.1",
-    "gulp-shell": "^0.2.5",
-    "gulp-zip": "~0.3.4",
+    "gulp-rimraf": "~0.2.2",
+    "gulp-shell": "^0.6.5",
+    "gulp-zip": "~4.1.0",
     "jpm": "^1.0.7",
-    "lodash": "^3.10.0",
-    "run-sequence": "~0.3.2"
+    "lodash": "^4.17.4",
+    "run-sequence": "~2.2.1"
   },
   "dependencies": {
     "animate.css": "^3.3.1",
-    "jquery": "^2.1.4"
+    "jquery": "^3.2.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
