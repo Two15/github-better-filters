@@ -1,5 +1,7 @@
 # Github Better Filters
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Two15/github-better-filters.svg)](https://greenkeeper.io/)
+
 Save your favorite filters when searching in github repos (Chrome and Firefox extension)
 
 ## Supported Browsers
